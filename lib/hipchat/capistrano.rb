@@ -39,7 +39,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
     
     def tmp_namespace
-      fetch(:namespace, "Fail")
+      fetch(:deployment_target, "Fail")
     end
 
     def deployment_name
