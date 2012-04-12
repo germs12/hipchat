@@ -24,7 +24,7 @@ Capistrano::Configuration.instance(:must_exist).load do
             send(deploy_user, "#{human} cancelled deployment of #{deployment_name} to #{env}.", hipchat_announce)
         end
 
-        message = "#{human} is deploying #{deployment_name} to #{env} on #{namespace}"
+        message = "#{human} is deploying #{deployment_name} to #{env} on #{tmp_namespace}"
         message << " (with migrations)" if hipchat_with_migrations
         message << "."
 
@@ -38,12 +38,8 @@ Capistrano::Configuration.instance(:must_exist).load do
         send(deploy_user, "#{human} finished deploying #{deployment_name} to #{env}.", hipchat_announce)
     end
     
-    def namespace
-      if namespace
-        "#{namespace}"
-      else
-        "fail"
-      end
+    def tmp_namespace
+      fetch(:namespace, "Fail")
     end
 
     def deployment_name
