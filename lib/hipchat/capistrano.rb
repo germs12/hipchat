@@ -39,7 +39,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
     
     def tmp_namespace
-      fetch(:aio_server, "Fail")
+      fetch(:aio_server, "an unknown server")
     end
 
     def deployment_name
