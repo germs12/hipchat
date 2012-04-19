@@ -44,7 +44,7 @@ Capistrano::Configuration.instance(:must_exist).load do
 
     def deployment_name
       if branch
-        "#{application}/#{branch}"
+        "App: #{application} from git Repo: #{branch}"
       else
         application
       end
