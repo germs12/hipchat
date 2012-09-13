@@ -21,10 +21,10 @@ Capistrano::Configuration.instance(:must_exist).load do
       if hipchat_send_notification
         on_rollback do
           hipchat_client[hipchat_room_name].
-            send(deploy_user, "#{human} cancelled deployment to #{tmp_namespace} -> #{deployment_name}.", hipchat_announce)
+            send(deploy_user, "#{human} cancelled deployment #{hipchat_details}.", hipchat_announce)
         end
 
-        message = "#{human} is deploying to #{tmp_namespace} -> #{deployment_name}"
+        message = "#{human} is deploying #{hipchat_details}"
         message << " (with migrations)" if hipchat_with_migrations
         message << "."
 
@@ -35,19 +35,19 @@ Capistrano::Configuration.instance(:must_exist).load do
 
     task :notify_deploy_finished do
       hipchat_client[hipchat_room_name].
-        send(deploy_user, "#{human} finished deploying to #{tmp_namespace} -> #{deployment_name}.", hipchat_announce)
+        send(deploy_user, "#{human} finished deploying #{hipchat_details}.", hipchat_announce)
     end
     
     def tmp_namespace
       fetch(:aio_server, "an unknown server")
     end
 
-    def deployment_name
-      if branch
-        "App: #{application} from git Repo: #{branch}"
-      else
-        application
-      end
+    def hipchat_details
+      "#{branch} to #{deployment_url}"
+    end
+
+    def deployment_url
+      "http://#{tmp_namespace}-#{application}.teladoc.net"
     end
     
     def deploy_user
